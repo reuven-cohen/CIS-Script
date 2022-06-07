@@ -29,8 +29,8 @@ if [[ "${auditResult}" == "1" ]]; then
 	prefIsManaged2=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value2}")
 	prefIsManaged3=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value3}")
 	prefIsManaged4=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value4}")
-	comment="Secure screen saver corners: enabled"
-	if [[ "${prefIsManaged}" != "6" ]] || [[ "${prefIsManaged2}" != "6" ]] || [[ "${prefIsManaged3}" != "6" ]] || [[ "${prefIsManaged4}" != "6" ]]; then
+	comment="Secure screen Saver corners: enabled"
+	if [[ "${prefValueAsUser}" != "6" ]] || [[ "${prefValueAsUser2}" != "6" ]] || [[ "${prefValueAsUser3}" != "6" ]] || [[ "${prefValueAsUser4}" != "6" ]]; then
 		result="Passed"
 	else
 		result="Failed"
