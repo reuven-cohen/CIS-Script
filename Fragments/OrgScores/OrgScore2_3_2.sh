@@ -29,12 +29,35 @@ if [[ "${auditResult}" == "1" ]]; then
 	prefIsManaged2=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value2}")
 	prefIsManaged3=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value3}")
 	prefIsManaged4=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value4}")
-	comment="Secure screen Saver corners: enabled"
-	if [[ "${prefValueAsUser}" != "6" ]] && [[ "${prefValueAsUser2}" != "6" ]] && [[ "${prefValueAsUser3}" != "6" ]] && [[ "${prefValueAsUser4}" != "6" ]]; then
+    comment="Secure screen saver corners: enabled"
+    	if [[ "${prefIsManaged}" == true ]] || [[ "${prefIsManaged2}" == true ]] || [[ "${prefIsManaged3}" == true ]] || [[ "${prefIsManaged4}" == true ]]; then
+    		prefIsManaged=true
+    	else
+    		prefIsManaged=false
+    	fi
+	if [[ "${prefValueAsUser}" != "6" ]] && [[ "${prefValue2AsUser}" != "6" ]] && [[ "${prefValue3AsUser}" != "6" ]] && [[ "${prefValue4AsUser}" != "6" ]]; then
 		result="Passed"
 	else
 		result="Failed"
 		comment="Secure screen saver corners: Disabled"
+        # Remediation
+		if [[ "${remediateResult}" == "enabled" ]]; then
+			/usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-bl-corner 2>/dev/null
+            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tl-corner 2>/dev/null
+            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tr-corner 2>/dev/null
+            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-br-corner 2>/dev/null
+			# re-check
+			prefValueAsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value}")
+			prefValue2AsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value2}")
+			prefValue3AsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value3}")
+			prefValue4AsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value4}")
+			if [[ "${prefValueAsUser}" != "6" ]] && [[ "${prefValue2AsUser}" != "6" ]] && [[ "${prefValue3AsUser}" != "6" ]] && [[ "${prefValue4AsUser}" != "6" ]]; then
+				result="Passed After Remediation"
+				comment="Secure screen saver corners: enabled"
+			else
+				result="Failed After Remediation"
+			fi
+		fi
 	fi
 fi
 value="${value}, ${value2}, ${value3}, ${value4}"
