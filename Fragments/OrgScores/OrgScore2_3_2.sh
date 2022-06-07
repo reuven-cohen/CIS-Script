@@ -31,9 +31,9 @@ if [[ "${auditResult}" == "1" ]]; then
 	prefIsManaged4=$(getPrefIsManagedrunAsUser "${appidentifier}" "${value4}")
     comment="Secure screen saver corners: enabled"
     	if [[ "${prefIsManaged}" == true ]] || [[ "${prefIsManaged2}" == true ]] || [[ "${prefIsManaged3}" == true ]] || [[ "${prefIsManaged4}" == true ]]; then
-    		prefIsManaged=true
+    		prefIsManaged="true"
     	else
-    		prefIsManaged=false
+    		prefIsManaged="false"
     	fi
 	if [[ "${prefValueAsUser}" != "6" ]] && [[ "${prefValue2AsUser}" != "6" ]] && [[ "${prefValue3AsUser}" != "6" ]] && [[ "${prefValue4AsUser}" != "6" ]]; then
 		result="Passed"
@@ -43,9 +43,9 @@ if [[ "${auditResult}" == "1" ]]; then
         # Remediation
 		if [[ "${remediateResult}" == "enabled" ]]; then
 			/usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-bl-corner 2>/dev/null
-            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tl-corner 2>/dev/null
-            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tr-corner 2>/dev/null
-            /usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-br-corner 2>/dev/null
+            		/usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tl-corner 2>/dev/null
+            		/usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-tr-corner 2>/dev/null
+            		/usr/bin/sudo -u "${currentUser}" /usr/bin/defaults delete /Users/"${currentUser}"/Library/Preferences/com.apple.dock wvous-br-corner 2>/dev/null
 			# re-check
 			prefValueAsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value}")
 			prefValue2AsUser=$(getPrefValuerunAsUser "${appidentifier}" "${value2}")
